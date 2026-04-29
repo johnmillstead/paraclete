@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const pageTitle = "Paraclete Mission Group";
 ---
-<BaseLayout>
-  <h1 class="text-4xl font-semibold">
+<BaseLayout pageTitle={pageTitle}>
+	<span slot="title">Paraclete Mission Group</span>
+  <h1 class="text-4xl text-testred font-semibold">
     Paraclete Mission Group
   </h1>
 </BaseLayout>
