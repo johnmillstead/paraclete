@@ -17,6 +17,14 @@ collections:
       - { label: Date, name: date, widget: datetime, type: date }
       - { label: Body, name: body, widget: richtext }
 
+  - name: authors
+    label: Authors
+    label_singular: Author
+    folder: /content/authors
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: richtext }
+
   - name: ministries
     label: Ministries
     label_singular: Ministry
@@ -25,10 +33,34 @@ collections:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }
 
+  - name: staff
+    label: Staff
+    label_singular: Staff Member
+    folder: /content/staff
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: richtext }
+
+  - name: board
+    label: Board
+    label_singular: Board Member
+    folder: /content/board
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: richtext }
+
   - name: projects
-    label: Projects 
+    label: Projects
     label_singular: Project
     folder: /content/projects
     fields:
       - { label: Title, name: title, widget: string }
-        - { label: Body, name: body, widget: richtext }
+      - { label: Body, name: body, widget: richtext }
+
+  - name: resources
+    label: Resources
+    label_singular: Resource
+    folder: /content/resources
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: richtext }
