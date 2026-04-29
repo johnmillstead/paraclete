@@ -16,3 +16,19 @@ collections:
       - { label: Title, name: title, widget: string }
       - { label: Date, name: date, widget: datetime, type: date }
       - { label: Body, name: body, widget: richtext }
+
+  - name: ministries
+    label: Ministries
+    label_singular: Ministry
+    folder: /content/ministries
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Body, name: body, widget: richtext }
+
+  - name: projects
+    label: Projects 
+    label_singular: Project
+    folder: /content/projects
+    fields:
+      - { label: Title, name: title, widget: string }
+        - { label: Body, name: body, widget: richtext }
