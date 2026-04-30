@@ -1,6 +1,6 @@
 ---
 title: Life in the Stoneages
-date: yyyy-04-Th
+date: 2026-04-30
 author: Fred Flintstone
 ---
 
