@@ -23,7 +23,7 @@ const {
     <!-- Header overlays hero when transparent -->
     <Header transparent={transparentHeader} />
 
-    <main>
+    <main class={transparentHeader ? "" : "pt-20"}>
       <slot />
     </main>
 
