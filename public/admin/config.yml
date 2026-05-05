@@ -4,63 +4,97 @@ backend:
   name: github
   repo: johnmillstead/paraclete
 
-media_folder: /public/media
+media_folder: public/media
 public_folder: /media
 
 collections:
   - name: posts
     label: Posts
     label_singular: Post
-    folder: /content/posts
+    folder: content/posts
+    create: true
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Date, name: date, widget: datetime, type: date }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+        }
+      - label: Author
+        name: author
+        widget: relation
+        collection: authors
+        search_fields: [title]
+        value_field: slug
+        display_fields: [title]
+        required: true
       - { label: Body, name: body, widget: richtext }
 
   - name: authors
     label: Authors
     label_singular: Author
-    folder: /content/authors
+    folder: content/authors
+    create: true
+    slug: "{{slug}}"
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Body, name: body, widget: richtext }
+      - label: Name
+        name: title
+        widget: string
+
+      - label: Profile Image
+        name: image
+        widget: image
+        required: true
+        media_folder: images
+        public_folder: images
+
+      - label: Bio
+        name: body
+        widget: richtext
 
   - name: ministries
     label: Ministries
-    label_singular: Ministry
-    folder: /content/ministries
+    folder: content/ministries
+    create: true
+    slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }
 
   - name: staff
     label: Staff
-    label_singular: Staff Member
-    folder: /content/staff
+    folder: content/staff
+    create: true
+    slug: "{{slug}}"
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Body, name: body, widget: richtext }
+      - { label: Name, name: title, widget: string }
+      - { label: Bio, name: body, widget: richtext }
 
   - name: board
     label: Board
-    label_singular: Board Member
-    folder: /content/board
+    folder: content/board
+    create: true
+    slug: "{{slug}}"
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Body, name: body, widget: richtext }
+      - { label: Name, name: title, widget: string }
+      - { label: Bio, name: body, widget: richtext }
 
   - name: projects
     label: Projects
-    label_singular: Project
-    folder: /content/projects
+    folder: content/projects
+    create: true
+    slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }
 
   - name: resources
     label: Resources
-    label_singular: Resource
-    folder: /content/resources
+    folder: content/resources
+    create: true
+    slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }

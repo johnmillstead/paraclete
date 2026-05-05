@@ -1,10 +1,35 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const pageTitle = "Paraclete Mission Group";
+
+const pageTitle = "Home";
 ---
-<BaseLayout pageTitle={pageTitle}>
-	<span slot="title">Paraclete Mission Group</span>
-  <h1 class="text-4xl text-testred font-semibold">
-    Paraclete Mission Group
-  </h1>
+
+<BaseLayout pageTitle={pageTitle} transparentHeader={true}>
+  <section class="relative h-[80vh]">
+    <!-- Hero Image -->
+    <img
+      src="https://pub-6dab674ceebc49aba7c626445056fa38.r2.dev/images/pmgHerov1.png"
+      alt="Hero image"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/30"></div>
+
+   
+<!-- Hero Content -->
+<div class="relative z-10 flex h-full items-center">
+  <div class="mx-auto max-w-7xl px-6 pt-24 text-left">
+    <h1 class="text-white text-5xl md:text-6xl font-bold leading-tight">
+      <span class="block">
+        Coming <span class="text-emerald-600">alongside</span>
+      </span>
+      <span class="block md:pl-12">
+        Christian leaders
+      </span>
+    </h1>
+  </div>
+</div>
+
+  </section>
 </BaseLayout>

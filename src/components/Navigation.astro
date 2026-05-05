@@ -1,0 +1,97 @@
+---
+const { transparent = false } = Astro.props;
+
+const items = [
+  { label: "Learn", href: "/learn" },
+  { label: "Serve", href: "/serve" },
+  { label: "People", href: "/people" },
+  { label: "Projects", href: "/projects" },
+  { label: "Resources", href: "/resources" },
+  { label: "Connect", href: "/connect" },
+];
+---
+
+<nav
+  id="site-nav"
+  data-transparent={transparent}
+  class:list={[
+    "fixed top-0 left-0 w-full z-50",
+    "transition-all duration-300",
+    transparent
+      ? "bg-transparent text-white"
+      : "bg-white text-gray-900 border-b border-gray-200",
+  ]}
+>
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="flex h-20 items-center justify-between">
+
+      
+ <!-- Logo -->
+      <a href="/" class="flex items-center">
+        <img
+          src="https://pub-6dab674ceebc49aba7c626445056fa38.r2.dev/images/hlogo.png"
+          alt="Paraclete Logo"
+          class="h-10 w-auto"
+        />
+      </a>
+
+
+      <!-- Desktop Nav -->
+      
+<div class="hidden md:flex items-center space-x-10">
+        {items.map((item) => (
+          <a
+            href={item.href}
+            class="text-sm font-medium transition hover:opacity-80"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+
+
+      
+<!-- !-- CTA --> 
+      <a
+        href="/give"
+        class="hidden md:inline-flex items-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-gray-800 transition"
+      >
+        Give
+      </a>
+
+
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (() => {
+    const nav = document.getElementById("site-nav");
+    if (!nav || nav.dataset.transparent !== "true") return;
+
+    const onScroll = () => {
+      if (window.scrollY > 40) {
+        nav.classList.remove("bg-transparent", "text-white");
+        nav.classList.add(
+          "bg-white",
+          "text-gray-900",
+          "shadow-sm",
+          "border-b",
+          "border-gray-200"
+        );
+      } else {
+        nav.classList.add("bg-transparent", "text-white");
+        nav.classList.remove(
+          "bg-white",
+          "text-gray-900",
+          "shadow-sm",
+          "border-b",
+          "border-gray-200"
+        );
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // run once on load
+  })();
+</script>
