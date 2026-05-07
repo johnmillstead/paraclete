@@ -36,19 +36,21 @@ jobs:
       - name: Publish Website Preview to SharePoint
         uses: MarkusMcNugen/SharePoint-Mirror-Sync@v1.0.0
         with:
-          # Folder in the repo to upload
-          file_path: dist
-
-          # SharePoint tenant host (NO protocol)
-          host_name: paracletemg.sharepoint.com
-
-          # Site name (NOT the full URL)
-          site_name: InformationTechnology
-
-          # Target path inside the document library
-          upload_path: "Website - In Progress/Website Preview"
-
-          # Entra / Azure AD app credentials
-          tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-          client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-          client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+          
+          # Match all files under dist/
+              file_path: dist/**
+              file_path_recursive_match: true
+          
+              # SharePoint tenant host (no https://)
+              host_name: paracletemg.sharepoint.com
+          
+              # Site name (not full URL)
+              site_name: InformationTechnology
+          
+              # Destination folder inside the document library
+              upload_path: "Website - In Progress/Website Preview"
+          
+              # Entra app credentials
+              tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
+              client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
+              client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
