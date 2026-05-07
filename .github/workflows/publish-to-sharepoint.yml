@@ -26,7 +26,7 @@ jobs:
         with:
           site_url: https://paracletemg.sharepoint.com/sites/InformationTechnology
           library_folder: "Website - In Progress/Website Preview"
-          local_folder: build
+          file_path: dist/**
           sharepoint_client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
           sharepoint_client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
 
