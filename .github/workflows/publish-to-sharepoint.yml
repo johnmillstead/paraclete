@@ -48,7 +48,7 @@ jobs:
               site_name: InformationTechnology
           
               # Destination folder inside the document library
-              upload_path: "/"
+              upload_path: "Documents/test"
           
               # Entra app credentials
               tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
