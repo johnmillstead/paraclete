@@ -1,36 +1,54 @@
 name: Publish Website to SharePoint
 
+# Opt into Node 24 for all JavaScript-based actions
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      # 2. Setup Node.js (Astro requires >=22.12; Node 24 is recommended)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
-      - run: npm ci
-      - run: npm run build
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Publish Website Preview
-        
-  uses: MarkusMcNugen/SharePoint-Mirror-Sync@v1.0.0
-  with:
-    host_name: paracletemg.sharepoint.com
-    site_name: InformationTechnology
-    upload_path: "Website - In Progress/Website Preview"
-    file_path: dist
-    tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-    client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-    client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+      # 4. Build the Astro site (outputs to dist/)
+      - name: Build site
+        run: npm run build
 
+      # 5. Sync build output to SharePoint (folder-aware)
+      - name: Publish Website Preview to SharePoint
+        uses: MarkusMcNugen/SharePoint-Mirror-Sync@v1.0.0
+        with:
+          # Folder in the repo to upload
+          file_path: dist
 
+          # SharePoint tenant host (NO protocol)
+          host_name: paracletemg.sharepoint.com
+
+          # Site name (NOT the full URL)
+          site_name: InformationTechnology
+
+          # Target path inside the document library
+          upload_path: "Website - In Progress/Website Preview"
+
+          # Entra / Azure AD app credentials
+          tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
+          client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
+          client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
