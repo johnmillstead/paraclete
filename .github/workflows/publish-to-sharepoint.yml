@@ -48,7 +48,7 @@ jobs:
               site_name: InformationTechnology
           
               # Destination folder inside the document library
-              upload_path: "Documents/Website - In Progress/Website Preview"
+              upload_path: /IgDg5Br_8H38Rrq9gBhhNefkAUAPZ7aJy-1hAhyN2SAOg54?e=fZxd5R
           
               # Entra app credentials
               tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
