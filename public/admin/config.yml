@@ -3,6 +3,8 @@
 backend:
   name: github
   repo: johnmillstead/paraclete
+  branch: main
+  auth_scope: repo
 
 media_folder: public/media
 public_folder: /media
@@ -11,7 +13,7 @@ collections:
   - name: posts
     label: Posts
     label_singular: Post
-    folder: content/posts
+    folder: src/content/posts
     create: true
     fields:
       - { label: Title, name: title, widget: string }
@@ -35,7 +37,7 @@ collections:
   - name: authors
     label: Authors
     label_singular: Author
-    folder: content/authors
+    folder: src/content/authors
     create: true
     slug: "{{slug}}"
     fields:
@@ -56,7 +58,7 @@ collections:
 
   - name: ministries
     label: Ministries
-    folder: content/ministries
+    folder: src/content/ministries
     create: true
     slug: "{{slug}}"
     fields:
@@ -65,16 +67,59 @@ collections:
 
   - name: staff
     label: Staff
-    folder: content/staff
+    folder: src/content/staff
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
+    summary: "{{order}} - {{name}} - {{title}}"
+    sortable_fields: [order, name, title, active, draft]
     fields:
-      - { label: Name, name: title, widget: string }
-      - { label: Bio, name: body, widget: richtext }
+      - { label: Name, name: name, widget: string }
+      - { label: Title, name: title, widget: string }
+
+      # ---------- Visibility / workflow ----------
+      - {
+          label: "Draft",
+          name: "draft",
+          widget: "boolean",
+          default: false,
+          required: true,
+        }
+      - {
+          label: "Active",
+          name: "active",
+          widget: "boolean",
+          default: true,
+          required: true,
+        }
+      - {
+          label: "Order",
+          name: "order",
+          widget: "number",
+          value_type: "int",
+          min: 0,
+          default: 0,
+        }
+
+      # ---------- Photo ----------
+      # IMPORTANT: Your seeded staff currently uses ABSOLUTE image URLs (R2).
+      # If you want to KEEP that, use widget: string.
+      - label: "Photo (URL)"
+        name: "photo"
+        widget: "string"
+        required: false
+        hint: "Use a full URL (https://...). If you prefer uploading images via CMS, we can switch this field to widget: image."
+
+      # If instead you want CMS-managed uploads, replace the field above with:
+      # - { label: "Photo", name: "photo", widget: "image", required: false }
+
+      # ---------- Bio ----------
+      - { label: "Bio", name: "bio", widget: "markdown", required: false }
 
   - name: board
     label: Board
-    folder: content/board
+    folder: src/content/board
     create: true
     slug: "{{slug}}"
     fields:
@@ -83,7 +128,7 @@ collections:
 
   - name: projects
     label: Projects
-    folder: content/projects
+    folder: src/content/projects
     create: true
     slug: "{{slug}}"
     fields:
@@ -92,7 +137,7 @@ collections:
 
   - name: resources
     label: Resources
-    folder: content/resources
+    folder: src/content/resources
     create: true
     slug: "{{slug}}"
     fields:

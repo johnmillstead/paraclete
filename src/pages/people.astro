@@ -1,7 +1,13 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-const pageTitle = "People";
+import { getCollection } from "astro:content";
+const staff = await getCollection("staff");
 ---
-<BaseLayout pageTitle={pageTitle}>
-    <span slot="title">People</span>
-</BaseLayout>
+
+<h1>People</h1>
+<p>Staff count: {staff.length}</p>
+
+<ul>
+  {staff.map((entry) => (
+    <li>{entry.data.name} — {entry.data.title}</li>
+  ))}
+</ul>
