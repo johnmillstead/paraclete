@@ -1,41 +1,34 @@
 // src/content.config.ts
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { glob } from "astro/loaders";
 
 const staff = defineCollection({
-  type: "content",
-  schema: z
-    .object({
-      name: z.string(),
-      title: z.string(),
-      photo: z.string().optional(), // external URL (R2) is fine
-      bio: z.string().optional(),
-      order: z.number().optional(),
-      draft: z.boolean().default(false),
-      active: z.boolean().default(true),
-    })
-    .passthrough(),
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/staff",
+  }),
+  schema: z.object({
+    name: z.string(),
+    title: z.string(),
+    photo: z.string().optional(),
+    bio: z.string().optional(),
+    order: z.number().optional(),
+    draft: z.boolean().default(false),
+    active: z.boolean().default(true),
+  }),
 });
 
-// Minimal schemas for the other folders you already have.
-// passthrough() future-proofs this until you define exact fields.
 const ministries = defineCollection({
-  type: "content",
-  schema: z.object({}).passthrough(),
+  schema: z.object({}),
 });
 
 const posts = defineCollection({
-  type: "content",
-  schema: z.object({}).passthrough(),
+  schema: z.object({}),
 });
 
 const projects = defineCollection({
-  type: "content",
-  schema: z.object({}).passthrough(),
+  schema: z.object({}),
 });
 
-export const collections = {
-  staff,
-  ministries,
-  posts,
-  projects,
-};
+export const collections = { staff, ministries, posts, projects };

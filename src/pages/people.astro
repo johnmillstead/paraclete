@@ -1,13 +1,33 @@
 ---
-import { getCollection } from "astro:content";
-const staff = await getCollection("staff");
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/MinistryLayout.astro';
+import StaffCard from '../components/StaffCard.astro';
+
+const allStaff = await getCollection('staff', ({ data }) => {
+  return data.active === true && data.draft === false;
+});
+
+const staff = allStaff.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
 ---
 
-<h1>People</h1>
-<p>Staff count: {staff.length}</p>
+<Layout title="Our People">
+  <main class="people-page">
 
-<ul>
-  {staff.map((entry) => (
-    <li>{entry.data.name} — {entry.data.title}</li>
-  ))}
-</ul>
+    <section class="people-section mt-24">
+      <h2 class="mt-8 font-bold">Staff</h2>
+      <div class="staff-grid mt-6">
+        {staff.map((member) => (
+         <StaffCard
+          name={member.data.name}
+          title={member.data.title}
+          photo={member.data.photo}
+          slug={member.id}
+          />
+        ))}
+      </div>
+    </section>
+
+ 
+    
+  </main>
+</Layout>
