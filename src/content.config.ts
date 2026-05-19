@@ -1,4 +1,3 @@
-// src/content.config.ts
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
@@ -12,10 +11,9 @@ const staff = defineCollection({
     name: z.string(),
     title: z.string(),
     photo: z.string().optional(),
-    bio: z.string().optional(),
     order: z.number().optional(),
-    draft: z.boolean().default(false),
-    active: z.boolean().default(true),
+    active: z.coerce.boolean().default(true),
+    draft: z.coerce.boolean().default(false),
   }),
 });
 

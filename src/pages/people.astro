@@ -8,26 +8,51 @@ const allStaff = await getCollection('staff', ({ data }) => {
 });
 
 const staff = allStaff.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const pageTitle = "People";
 ---
 
-<Layout title="Our People">
+<Layout pageTitle={pageTitle}>
   <main class="people-page">
 
-    <section class="people-section mt-24">
-      <h2 class="mt-8 font-bold">Staff</h2>
-      <div class="staff-grid mt-6">
-        {staff.map((member) => (
-         <StaffCard
-          name={member.data.name}
-          title={member.data.title}
-          photo={member.data.photo}
-          slug={member.id}
-          />
-        ))}
-      </div>
-    </section>
+    
+<section class="people-section mt-24">
+  <h2 class="mt-8 text-2xl font-bold">Staff</h2>
+
+  <div class="staff-grid mt-6">
+    
+{staff.map((member) => {
+  const slug = member.id.replace(/^.*\//, '').replace(/\.md$/, '');
+
+  return (
+    <a href={`/staff/${slug}`} class="staff-card-link">
+      <StaffCard
+        name={member.data.name}
+        title={member.data.title}
+        photo={member.data.photo}
+      />
+    </a>
+  );
+})}
+
+  </div>
+</section>
+
 
  
     
   </main>
 </Layout>
+
+<style>
+
+  .staff-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.staff-card-link:hover,
+.staff-card-link:focus {
+  transform: translateY(-2px);
+}
+
+</style>

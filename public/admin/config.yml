@@ -77,30 +77,30 @@ collections:
     fields:
       - { label: Name, name: name, widget: string }
       - { label: Title, name: title, widget: string }
-
-      # ---------- Visibility / workflow ----------
+      # - { label: Photo, name: photo, widget: image, required: false }
       - {
-          label: "Draft",
-          name: "draft",
-          widget: "boolean",
-          default: false,
-          required: true,
-        }
-      - {
-          label: "Active",
-          name: "active",
-          widget: "boolean",
-          default: true,
-          required: true,
-        }
-      - {
-          label: "Order",
-          name: "order",
-          widget: "number",
+          label: Order,
+          name: order,
+          widget: number,
           value_type: "int",
           min: 0,
           default: 0,
         }
+      - {
+          label: Active,
+          name: active,
+          widget: boolean,
+          default: true,
+          required: true,
+        }
+      - {
+          label: Draft,
+          name: draft,
+          widget: boolean,
+          default: false,
+          required: true,
+        }
+      - { label: Bio, name: body, widget: markdown }
 
       # ---------- Photo ----------
       # IMPORTANT: Your seeded staff currently uses ABSOLUTE image URLs (R2).
@@ -134,7 +134,43 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }
+      - { label: tags, name: tags, widget: list, required: false }
+      - { label: excerpt, name: excerpt, widget: string, required: false }
+      # - { label: image, name: image, widget: image, required: false }
+      - {
+          label: ministry,
+          name: ministry,
+          widget: relation,
+          collection: ministries,
+          search_fields: [title],
+          value_field: slug,
+          display_fields: [title],
+          required: false,
+        }
+      - {
+          label: Active,
+          name: active,
+          widget: boolean,
+          default: true,
+          required: true,
+        }
+      - {
+          label: Draft,
+          name: draft,
+          widget: boolean,
+          default: false,
+          required: true,
+        }
+      - { label: photo, name: photo, widget: string, required: false }
+      - {
+          label: slug,
+          name: slug,
+          widget: string,
+          required: false,
+          hint: "Optional. If left blank, it will be auto-generated from the title.",
+        }
 
+        # ---------- Photo ----------
   - name: resources
     label: Resources
     folder: src/content/resources
