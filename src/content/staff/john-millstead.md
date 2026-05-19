@@ -1,8 +1,8 @@
 ---
-name: "John Millstead"
-title: "IT and Risk Manager"
-photo: "https://pub-6dab674ceebc49aba7c626445056fa38.r2.dev/images/johnmillstead.jpg"
-order: 7
+name: John Millstead
+title: IT and Risk Manager
+photo: https://pub-6dab674ceebc49aba7c626445056fa38.r2.dev/images/johnmillstead.jpg
+
 draft: false
 active: true
 ---
