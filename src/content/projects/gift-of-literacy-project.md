@@ -6,7 +6,7 @@ excerpt: For nearly 300 million adults in South Asia, 68% of whom are women and 
 ministry: Hogshead Ministry
 active: true
 draft: false
-photo: https://www.paraclete.net/project/gift-of-literacy-project/
+photo: "https://www.paraclete.net/wp-content/uploads/2019/03/literacy1_288_216-288x216.jpg"
 slug: gift-of-literacy-project
 order: 2
 ---
