@@ -3,7 +3,7 @@ title: Gift of Literacy Project
 tags:
   - literacy classes
 excerpt: For nearly 300 million adults in South Asia, 68% of whom are women and girls, the darkness and shame of being unable to read, write, or do simple math is an everyday reality.
-ministry: ''
+ministry: Hogshead Ministry
 active: true
 draft: false
 photo: https://www.paraclete.net/project/gift-of-literacy-project/
