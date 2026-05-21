@@ -2,7 +2,7 @@
 title: Ethiopia Girls Education/PinKGirl
 tags: []
 excerpt: Ethiopia Girls Education/PinKGirl provides Ethiopian young women with academic counseling, educational assistance, and life skills in order to successfully graduate high school and attend a university.
-ministry: ''
+ministry: Field Ministry
 active: true
 draft: false
 photo: https://www.paraclete.net/wp-content/uploads/2019/03/pinkgirl1-288x190.jpg
