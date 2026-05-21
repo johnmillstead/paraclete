@@ -26,7 +26,19 @@ const posts = defineCollection({
 });
 
 const projects = defineCollection({
-  schema: z.object({}),
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/projects",
+  }),
+  schema: z.object({
+    title: z.string(),
+    photo: z.string().optional(),
+    // order: z.number().optional(),
+    excerpt: z.string().optional(),
+    body: z.string().optional(),
+    active: z.coerce.boolean().default(true),
+    draft: z.coerce.boolean().default(false),
+  }),
 });
 
 export const collections = { staff, ministries, posts, projects };

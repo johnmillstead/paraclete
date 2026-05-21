@@ -1,0 +1,97 @@
+---
+interface Props {
+  photo?: string;
+  title: string;
+  excerpt?: string;
+  slug: string;
+ }
+
+const { photo, title, excerpt, slug } = Astro.props;
+
+function getInitials(title: string) {
+  return title
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
+---
+
+<div class="project-card">
+  <div class="photo-wrap">
+    {photo ? (
+      <img src={photo} alt={`Photo of ${title}`} />
+    ) : (
+      <div class="initials">{getInitials(title)}</div>
+    )}
+  </div>
+  <p class="project-title">{title}</p>
+  <p class="project-excerpt">{excerpt}</p>
+
+</div>
+
+
+
+<style>
+  /* --- CARD INTERFACES --- */
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none; /* Strips blue link styling */
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* Subtle card pop hover interaction */
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-image-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Guarantees standard proportion uniform cards */
+    background: #f5f8fa;
+    overflow: hidden;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents squishing, crops cleanly to fit wrapper */
+  }
+
+  .image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8899a6;
+    font-size: 0.9rem;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.35rem;
+    color: #1c1e21;
+  }
+
+  .card-excerpt {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #657786;
+    line-height: 1.5;
+  }
+</style>

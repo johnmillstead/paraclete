@@ -1,8 +1,140 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/MinistryLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const activeProjects = await getCollection('projects', ({ data }) => {
+  return data.active === true && data.draft === false;
+});
+
+// Fetch all entries from the 'projects' collection
+const allProjects = await getCollection('projects');
+
 const pageTitle = "Projects";
 ---
-<BaseLayout pageTitle={pageTitle}>
-    <span slot="title">Projects</span>
 
-</BaseLayout>
+<Layout pageTitle={pageTitle}>
+  <main class="projects-page">
+
+    
+<!-- Responsive Grid Wrapper -->
+    <div class="project-grid mt-24">
+      {activeProjects.map((project) => (
+        /* Entire card acts as a link to the [slug].astro detail page */
+        <a href={`/projects/${project.id || project.slug}`} class="project-card">
+          
+          {/* 1. Photo Container */}
+          <div class="card-image-wrapper">
+            {project.data.photo ? (
+              <img src={project.data.photo} alt={project.data.title} class="card-image" />
+            ) : (
+              <div class="image-placeholder">No Image Available</div>
+            )}
+          </div>
+
+          {/* Text Content */}
+          <div class="card-content">
+            {/* 2. Title */}
+            <h2 class="card-title">{project.data.title}</h2>
+            
+            {/* 3. Excerpt */}
+            <p class="card-excerpt">{project.data.excerpt}</p>
+          </div>
+          
+        </a>
+      ))}
+    </div>
+  </main>
+</body>
+</html>
+
+<style>
+  /* Base Container Styles */
+ 
+
+  /* --- RESPONSIVE GRID CONFIGURATION --- */
+  .project-grid {
+    display: grid;
+    /* Default spacing between grid elements */
+    gap: 1.5rem; 
+    /* 1 Column for Mobile devices */
+    grid-template-columns: repeat(1, minmax(0, 1fr)); 
+  }
+
+  /* Responsive Breakpoint: Tablets */
+  @media (min-width: 768px) {
+    .project-grid {
+      /* 2 Columns for Medium viewports */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Responsive Breakpoint: Desktops */
+  @media (min-width: 1024px) {
+    .project-grid {
+      /* 3 Columns for Large screens */
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* --- CARD INTERFACES --- */
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none; /* Strips blue link styling */
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* Subtle card pop hover interaction */
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-image-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Guarantees standard proportion uniform cards */
+    background: #f5f8fa;
+    overflow: hidden;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents squishing, crops cleanly to fit wrapper */
+  }
+
+  .image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8899a6;
+    font-size: 0.9rem;
+  }
+
+  .card-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.35rem;
+    color: #1c1e21;
+  }
+
+  .card-excerpt {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #657786;
+    line-height: 1.5;
+  }
+</style>

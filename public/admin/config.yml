@@ -130,7 +130,10 @@ collections:
     label: Projects
     folder: src/content/projects
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
+    sortable_fields: [order, title, excerpt, active, draft]
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Body, name: body, widget: richtext }
@@ -168,6 +171,14 @@ collections:
           widget: string,
           required: false,
           hint: "Optional. If left blank, it will be auto-generated from the title.",
+        }
+      - {
+          label: Order,
+          name: order,
+          widget: number,
+          value_type: "int",
+          min: 0,
+          default: 0,
         }
 
         # ---------- Photo ----------
