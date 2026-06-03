@@ -7,4 +7,8 @@ draft: false
 active: true
 ---
 
-John Millstead has a passion for helping missionaries and church leaders to fulfill the Great Commission of Jesus Christ. He has a diverse background including military, corporate finance, missionary service, law enforcement and entrepreneurial start-ups. John oversees Paraclete’s Informational Technology and Risk Management. John and his wife, Anna are also missionary associates with Paraclete Mission Group.
+John Millstead has a passion for helping missionaries and church leaders to fulfill the Great Commission of Jesus Christ. He has a diverse background including military, corporate finance, missionary service, law enforcement and entrepreneurial start-ups.
+
+John oversees Paraclete’s Informational Technology and Risk Management.
+
+John and his wife, Anna are also missionary associates with Paraclete Mission Group.

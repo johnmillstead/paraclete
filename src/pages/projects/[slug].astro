@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => {
+    const slug = project.id.replace(/^.*\//, '').replace(/\.md$/, '');
+    return { params: { slug }, props: { project } };
+  });
+}
+
+const { project } = Astro.props;
+const { title, body, photo } = project.data;
+---
+<BaseLayout pageTitle={title}>
+
+<article class="mx-auto max-w-2xl">
+  <img class="w-50 h-auto mt-6" src={photo} alt={`Photo of ${title}`} />
+  <h1 class="font-bold mt-2">{title}</h1>
+  <h2 class="italic">{title}</h2>
+
+  <div class="body text-2xl font-serif text-gray-700 mt-4 [&>p]:mb-4" set:html={project.rendered?.html} />
+</article>
+</BaseLayout>

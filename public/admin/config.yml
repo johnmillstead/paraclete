@@ -115,7 +115,7 @@ collections:
       # - { label: "Photo", name: "photo", widget: "image", required: false }
 
       # ---------- Bio ----------
-      - { label: "Bio", name: "bio", widget: "markdown", required: false }
+      # - { label: "Bio", name: "bio", widget: "markdown", required: false }
 
   - name: board
     label: Board
