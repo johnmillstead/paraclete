@@ -16,5 +16,8 @@
     "astro": "^6.1.5",
     "nvm": "^0.0.4",
     "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.99.0"
   }
 }
