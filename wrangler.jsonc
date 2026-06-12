@@ -2,9 +2,10 @@
   "name": "paraclete",
   "compatibility_date": "2026-06-11",
   "compatibility_flags": ["global_fetch_strictly_public"],
-  "usage_model": "standard",
   "observability": {
     "enabled": true
+  },
+  "assets": {
+    "directory": "./dist"
   }
-  // Remove the "bindings" field entirely
 }
