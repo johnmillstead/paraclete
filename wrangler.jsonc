@@ -1,19 +1,10 @@
 {
-  "name": "Paraclete",
-  "compatibility_date": "2026-06-11", // Update to the day you deploy
-  "assets": {
-    "directory": "./dist",
-  },
-  "kv_namespaces": [
-    {
-      "binding": "SESSION",
-      "id": "57428b09ec2a4d22958d93cfde20d334",
-    },
-  ],
-  "bindings": [
-    {
-      "type": "images",
-      "name": "IMAGES",
-    },
-  ],
+  "name": "paraclete",
+  "compatibility_date": "2026-06-11",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "usage_model": "standard",
+  "observability": {
+    "enabled": true
+  }
+  // Remove the "bindings" field entirely
 }
