@@ -1,0 +1,116 @@
+---
+// src/components/ScopeSection.astro
+import siteConfig from '../data/site-config.yml';
+
+const metrics = siteConfig.metrics['2025'];
+const metricsList = [
+  { value: metrics.countries_served, label: 'Countries Served' },
+  { value: metrics.churches_organizations_served, label: 'Churches and Organizations Served' },
+  { value: metrics.people_counseled_mentored_coached_discipled, label: 'People Counseled, Mentored, Coached, or Discipled' },
+  { value: metrics.total_people_taught, label: 'Total People Taught' },
+];
+---
+
+<section id="scope-2025" class="relative py-16 md:py-24 bg-gradient-to-b from-slate-100 to-slate-50">
+  <!-- Background map (optional - can add background image here) -->
+  <div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('data:image/svg+xml,...')"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4">
+    <!-- Header -->
+    <h2 class="text-4xl md:text-5xl font-bold text-center text-teal-900 mb-2 tracking-wide">
+      <a href="https://www.paraclete.net/som/" class="hover:opacity-80 transition-opacity inline-block">
+        2025 SCOPE
+      </a>
+    </h2>
+    <div class="h-1 w-24 bg-orange-400 mx-auto mb-12"></div>
+
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
+      {metricsList.map((metric) => (
+        <div class="text-center">
+          <!-- Count-up number -->
+          <div class="mb-4">
+            <span
+              class="text-5xl md:text-6xl font-bold text-teal-700 count-up"
+              data-target={metric.value}
+            >
+              0
+            </span>
+            {metric.value > 999 && <span class="text-sm text-slate-600 ml-1">+</span>}
+          </div>
+
+          <!-- Label -->
+          <p class="text-sm md:text-base text-teal-900 font-semibold leading-snug">
+            {metric.label}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Count-up animation on scroll into view
+  function animateCountUp(element: Element) {
+    const target = parseInt(element.getAttribute('data-target') || '0');
+    const start = 0;
+    const duration = 2000; // 2 seconds
+    const startTime = Date.now();
+
+    const update = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function for smooth animation
+      const easeOutQuad = 1 - Math.pow(1 - progress, 2);
+      const current = Math.floor(start + (target - start) * easeOutQuad);
+
+      // Format with commas for readability
+      element.textContent = current.toLocaleString();
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    };
+
+    update();
+  }
+
+  // Intersection Observer to trigger animation when section is visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // Animate all count-up elements in this section
+        entry.target.querySelectorAll('.count-up').forEach((el) => {
+          animateCountUp(el);
+        });
+        // Stop observing once animation is triggered
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  // Observe the section
+  const scopeSection = document.getElementById('scope-2025');
+  if (scopeSection) {
+    observer.observe(scopeSection);
+  }
+</script>
+
+<style>
+  /* Optional: Add subtle animation to section on load */
+  section {
+    animation: fadeIn 0.6s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

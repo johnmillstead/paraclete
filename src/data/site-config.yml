@@ -1,0 +1,24 @@
+# Paraclete Mission Group - Site Configuration
+# Update these values annually when metrics are finalized
+
+site_name: Paraclete Mission Group
+site_url: https://www.paraclete.net
+
+metrics:
+  2025:
+    # Home page - 2025 Scope section
+    countries_served: 115
+    churches_organizations_served: 507
+    people_counseled_mentored_coached_discipled: 5991
+    total_people_taught: 20905
+
+    # Learn page - 2025 Scope section
+    avg_years_mission_service: 24
+    paraclete_associates: 157
+
+# Update instructions:
+# To update metrics for next year:
+# 1. Add a new year block (e.g., 2026:) or update 2025 values
+# 2. Commit changes to git
+# 3. Deploy - both Home and Learn pages will auto-update
+# 4. No other files need editing
