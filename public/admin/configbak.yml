@@ -24,14 +24,6 @@ collections:
           date_format: "YYYY-MM-DD",
           time_format: false,
         }
-      - {
-          label: "Featured Image",
-          name: "image",
-          widget: "image",
-          required: false,
-          media_folder: "images",
-          public_folder: "images",
-        }
       - label: Author
         name: author
         widget: relation
