@@ -15,6 +15,8 @@ collections:
     label_singular: Post
     folder: src/content/posts
     create: true
+    extension: md
+    format: frontmatter
     fields:
       - { label: Title, name: title, widget: string }
       - {
@@ -29,15 +31,26 @@ collections:
           name: "image",
           widget: "image",
           required: false,
-          media_folder: "images",
-          public_folder: "images",
+          # FIXED: relative paths ("images") are resolved relative to this
+          # collection's `folder` (src/content/posts), not the top-level
+          # media_folder — so uploads were landing in
+          # src/content/posts/images instead of public/media. Absolute
+          # paths (leading slash) fix that and keep posts images grouped
+          # in their own subfolder under the shared media root.
+          media_folder: "/public/media/posts",
+          public_folder: "/media/posts",
         }
       - label: Author
         name: author
         widget: relation
         collection: authors
         search_fields: [title]
-        value_field: slug
+        # FIXED: "slug" (no braces) was being treated as a literal field
+        # name on `authors` entries — but authors has no `slug` field, so
+        # this relation could never resolve to a value. `{{slug}}` is the
+        # special template tag that refers to the referenced entry's actual
+        # slug/filename, matching `reference("authors")` in content.config.ts.
+        value_field: "{{slug}}"
         display_fields: [title]
         required: true
       - { label: Body, name: body, widget: richtext }
@@ -47,6 +60,8 @@ collections:
     label_singular: Author
     folder: src/content/authors
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
     fields:
       - label: Name
@@ -57,8 +72,9 @@ collections:
         name: image
         widget: image
         required: true
-        media_folder: images
-        public_folder: images
+        # FIXED: same relative-path issue as the posts image field above.
+        media_folder: "/public/media/authors"
+        public_folder: "/media/authors"
 
       - label: Bio
         name: body
@@ -68,6 +84,8 @@ collections:
     label: Ministries
     folder: src/content/ministries
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
@@ -129,6 +147,8 @@ collections:
     label: Board
     folder: src/content/board
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
     fields:
       - { label: Name, name: title, widget: string }
@@ -154,7 +174,9 @@ collections:
           widget: relation,
           collection: ministries,
           search_fields: [title],
-          value_field: slug,
+          # FIXED: same literal-field-name bug as posts.author above —
+          # ministries has no `slug` field either.
+          value_field: "{{slug}}",
           display_fields: [title],
           required: false,
         }
@@ -194,6 +216,8 @@ collections:
     label: Resources
     folder: src/content/resources
     create: true
+    extension: md
+    format: frontmatter
     slug: "{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
