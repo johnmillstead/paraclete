@@ -1,6 +1,7 @@
 ---
 title: Life in the Stoneages
 date: 2026-04-30
+image: https://wallpapers.com/images/hd/fred-flintstones-drives-at-library-k8qlw05btork42vk.jpg
 author: Fred Flintstone
 ---
 
