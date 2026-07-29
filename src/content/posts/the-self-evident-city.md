@@ -1,7 +1,7 @@
 ---
 title: The Self Evident City
 date: 2026-07-20
-image: images/selfevidentcity.jpg
+image: https://www.paraclete.net/wp-content/uploads/elementor/thumbs/SelfEvidentCity-06b-rqk248pu06m1lhbexvv7gj8o5h3wp7d71jhord5fuw.jpg
 author: Jim Manley
 ---
 
