@@ -4,10 +4,10 @@
  * ----------------
  * Homepage "articles/blog teaser" section.
  *
- * Layout container (rounded panel, eyebrow heading, pill "More Posts"
- * button) is based on the homepage concept mockup. The card content —
- * author + avatar, title, excerpt, "Read More »", date — mirrors the
- * "MISSIONS UPDATES" section currently live on paraclete.net.
+ * Full-width frame color (#dde5eb) is sampled from the "2025 Scope" map
+ * band in the concept mockup, so this section reads as a continuation of
+ * that band rather than a floating card. Card markup lives in
+ * ArticleCard.astro, shared with the /articles listing page.
  *
  * Reads from the `posts` content collection (src/content.config.ts), whose
  * confirmed schema is:
@@ -18,18 +18,14 @@
  *   author: reference("authors")   // resolved below via getEntry()
  *
  * Notes on fields that AREN'T in the schema (yet):
- * - No `excerpt` field, so the card excerpt is derived by stripping tags
- *   from the rendered post body (`post.rendered.html`) and truncating.
- *   If you'd rather author excerpts by hand, add an `excerpt` field to
- *   config.yml + the posts schema and swap the `excerptFrom()` call below
- *   for `post.data.excerpt`.
- * - No `category` field, so there's no category badge on the card (the
- *   concept mockup and live site both have one). Add a `category`
- *   string/select field if you want it back.
- * - No `draft` field on posts yet, so there's no draft filtering here. Add
- *   one (matching the staff/projects pattern) if you need it.
+ * - No `excerpt` field — ArticleCard derives the card excerpt from
+ *   `post.rendered.html`. Add an `excerpt` field to config.yml + the posts
+ *   schema if you'd rather author excerpts by hand.
+ * - No `category` field, so there's no category badge on the card.
+ * - No `draft` field on posts yet, so there's no draft filtering here.
  */
 import { getCollection, getEntry } from 'astro:content';
+import ArticleCard from './ArticleCard.astro';
 
 interface Props {
   /** Section eyebrow/heading */
@@ -56,37 +52,28 @@ const posts = allPosts
   .slice(0, limit);
 
 // `author` is a reference() to the `authors` collection — resolve each one
-// to get the author's name/photo for the byline.
+// so ArticleCard can render the byline/avatar.
 const cards = await Promise.all(
   posts.map(async (post) => ({
     post,
     author: await getEntry(post.data.author),
   }))
 );
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-});
-
-/** Strip HTML tags from a rendered post body and truncate for a card excerpt. */
-function excerptFrom(html: string | undefined, maxLength = 150): string {
-  if (!html) return '';
-  const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  if (text.length <= maxLength) return text;
-  return `${text.slice(0, maxLength).trimEnd()}…`;
-}
 ---
 
 {/*
   Frame color (#dde5eb) is sampled directly from the "2025 Scope" map
-  section in the concept mockup. The background now spans full width
-  (edge-to-edge) to read as a continuation of that band, rather than a
-  floating rounded card. Swap for a design-token class
-  (e.g. bg-paraclete-mist) once one exists in tailwind.config.
+  section in the concept mockup. `w-full` alone only fills whatever
+  container this section sits inside (e.g. BaseLayout's centered <main>),
+  which is why it wasn't reaching the viewport edges on the live build.
+  The `relative left-1/2 right-1/2 w-screen -mx-[50vw]` combo is the
+  standard "full-bleed breakout" trick: it escapes any parent max-width
+  regardless of that parent's width or padding, so this always spans the
+  true viewport edge-to-edge like the map band above it. Swap the color
+  for a design-token class (e.g. bg-paraclete-mist) once one exists in
+  tailwind.config.
 */}
-<section class="w-full bg-[#dde5eb] py-12 sm:py-16">
+<section class="relative left-1/2 right-1/2 w-screen -mx-[50vw] bg-[#dde5eb] py-12 sm:py-16">
   <div class="mx-auto max-w-6xl px-4 sm:px-8">
     <h2 class="text-center text-2xl font-bold uppercase tracking-wide text-teal-900 sm:text-3xl">
       {heading}
@@ -96,61 +83,9 @@ function excerptFrom(html: string | undefined, maxLength = 150): string {
       <p class="mt-8 text-center text-slate-600">More stories are on the way — check back soon.</p>
     ) : (
       <div class="mt-8 grid justify-items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {cards.map(({ post, author }) => {
-          const { title, date, image } = post.data;
-          const href = `${postBasePath}/${post.id}/`;
-          const excerpt = excerptFrom(post.rendered?.html);
-
-          return (
-            <article class="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md">
-              {image && (
-                <a href={href} class="block">
-                  <img
-                    src={image}
-                    alt=""
-                    loading="lazy"
-                    class="aspect-[3/2] w-full object-cover"
-                  />
-                </a>
-              )}
-
-              <div class="flex flex-1 flex-col p-5">
-                <h3 class="text-lg font-bold leading-snug text-teal-900">
-                  <a href={href} class="hover:text-orange-500">{title}</a>
-                </h3>
-
-                {excerpt && (
-                  <p class="mt-2 flex-1 text-sm text-slate-600 line-clamp-3">
-                    {excerpt}
-                  </p>
-                )}
-
-                <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
-                  {author?.data.image && (
-                    <img
-                      src={author.data.image}
-                      alt=""
-                      loading="lazy"
-                      class="h-6 w-6 rounded-full object-cover"
-                    />
-                  )}
-                  {author?.data.title && <span>{author.data.title}</span>}
-                  {author?.data.title && <span aria-hidden="true">&middot;</span>}
-                  <time datetime={date.toISOString()}>
-                    {dateFormatter.format(date)}
-                  </time>
-                </div>
-
-                <a
-                  href={href}
-                  class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-orange-500 hover:text-orange-600"
-                >
-                  Read More <span aria-hidden="true">&raquo;</span>
-                </a>
-              </div>
-            </article>
-          );
-        })}
+        {cards.map(({ post, author }) => (
+          <ArticleCard post={post} author={author} postBasePath={postBasePath} />
+        ))}
       </div>
     )}
 
