@@ -1,0 +1,68 @@
+---
+/**
+ * src/components/ArticleCard.astro
+ * -----------------------------------
+ * Single post card. Used by both the homepage Articles.astro teaser and
+ * the /articles listing page, so the card markup only lives in one place.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { dateFormatter, excerptFrom } from '../utils/text';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  author: CollectionEntry<'authors'> | null;
+  /** Base path for individual post pages, e.g. "/articles" -> /articles/my-post-slug/ */
+  postBasePath?: string;
+}
+
+const { post, author, postBasePath = '/articles' } = Astro.props;
+const { title, date, image } = post.data;
+const href = `${postBasePath}/${post.id}/`;
+const excerpt = excerptFrom(post.rendered?.html);
+---
+
+<article class="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md">
+  {image && (
+    <a href={href} class="block">
+      <img
+        src={image}
+        alt=""
+        loading="lazy"
+        class="aspect-[3/2] w-full object-cover"
+      />
+    </a>
+  )}
+
+  <div class="flex flex-1 flex-col p-5">
+    <h3 class="text-lg font-bold leading-snug text-teal-900">
+      <a href={href} class="hover:text-orange-500">{title}</a>
+    </h3>
+
+    {excerpt && (
+      <p class="mt-2 flex-1 text-sm text-slate-600 line-clamp-3">
+        {excerpt}
+      </p>
+    )}
+
+    <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
+      {author?.data.image && (
+        <img
+          src={author.data.image}
+          alt=""
+          loading="lazy"
+          class="h-6 w-6 rounded-full object-cover"
+        />
+      )}
+      {author?.data.title && <span>{author.data.title}</span>}
+      {author?.data.title && <span aria-hidden="true">&middot;</span>}
+      <time datetime={date.toISOString()}>{dateFormatter.format(date)}</time>
+    </div>
+
+    <a
+      href={href}
+      class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-orange-500 hover:text-orange-600"
+    >
+      Read More <span aria-hidden="true">&raquo;</span>
+    </a>
+  </div>
+</article>

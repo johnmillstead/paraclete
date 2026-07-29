@@ -79,14 +79,15 @@ function excerptFrom(html: string | undefined, maxLength = 150): string {
 }
 ---
 
-<section class="bg-white py-12 sm:py-16">
-  {/*
-    Frame color (#dde5eb) is sampled directly from the "2025 Scope" map
-    section in the concept mockup, so this panel reads as a continuation
-    of that band rather than a plain gray box. Swap for a design-token
-    class (e.g. bg-paraclete-mist) once one exists in tailwind.config.
-  */}
-  <div class="mx-auto max-w-6xl rounded-2xl border border-[#c9d6e0] bg-[#dde5eb] px-4 py-10 sm:px-8 sm:py-12">
+{/*
+  Frame color (#dde5eb) is sampled directly from the "2025 Scope" map
+  section in the concept mockup. The background now spans full width
+  (edge-to-edge) to read as a continuation of that band, rather than a
+  floating rounded card. Swap for a design-token class
+  (e.g. bg-paraclete-mist) once one exists in tailwind.config.
+*/}
+<section class="w-full bg-[#dde5eb] py-12 sm:py-16">
+  <div class="mx-auto max-w-6xl px-4 sm:px-8">
     <h2 class="text-center text-2xl font-bold uppercase tracking-wide text-teal-900 sm:text-3xl">
       {heading}
     </h2>
@@ -94,7 +95,7 @@ function excerptFrom(html: string | undefined, maxLength = 150): string {
     {cards.length === 0 ? (
       <p class="mt-8 text-center text-slate-600">More stories are on the way — check back soon.</p>
     ) : (
-      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-8 grid justify-items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ post, author }) => {
           const { title, date, image } = post.data;
           const href = `${postBasePath}/${post.id}/`;

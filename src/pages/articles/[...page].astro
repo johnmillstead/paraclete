@@ -1,0 +1,75 @@
+---
+/**
+ * src/pages/articles/[...page].astro
+ * --------------------------------------
+ * "All Posts" listing that backs the homepage Articles.astro "More Posts"
+ * button. Uses Astro's built-in paginate() so this single file generates
+ * /articles/ (page 1), /articles/2/, /articles/3/, etc.
+ *
+ * Reuses ArticleCard.astro (same component as the homepage teaser) so the
+ * cards stay visually identical between the two.
+ *
+ * Adjust the BaseLayout import path below to match your project if it
+ * lives somewhere other than src/layouts/BaseLayout.astro.
+ */
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const PAGE_SIZE = 12; // 3 rows of 4 to match the 4-column grid
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getCollection('posts');
+  const sorted = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return paginate(sorted, { pageSize: PAGE_SIZE });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+
+// `author` is a reference() to the `authors` collection — resolve each one
+// so ArticleCard can render the byline/avatar.
+const cards = await Promise.all(
+  page.data.map(async (post) => ({
+    post,
+    author: await getEntry(post.data.author),
+  }))
+);
+---
+
+<BaseLayout title="Articles">
+  <section class="w-full bg-[#dde5eb] py-12 sm:py-16">
+    <div class="mx-auto max-w-6xl px-4 sm:px-8">
+      <h1 class="text-center text-2xl font-bold uppercase tracking-wide text-teal-900 sm:text-3xl">
+        All Posts
+      </h1>
+
+      {cards.length === 0 ? (
+        <p class="mt-8 text-center text-slate-600">More stories are on the way — check back soon.</p>
+      ) : (
+        <div class="mt-8 grid justify-items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {cards.map(({ post, author }) => (
+            <ArticleCard post={post} author={author} postBasePath="/articles" />
+          ))}
+        </div>
+      )}
+
+      {(page.url.prev || page.url.next) && (
+        <div class="mt-10 flex items-center justify-center gap-6 text-sm font-semibold text-teal-800">
+          {page.url.prev ? (
+            <a href={page.url.prev} class="hover:text-orange-500">&laquo; Previous</a>
+          ) : (
+            <span class="text-slate-400">&laquo; Previous</span>
+          )}
+          <span class="text-slate-400">Page {page.currentPage} of {page.lastPage}</span>
+          {page.url.next ? (
+            <a href={page.url.next} class="hover:text-orange-500">Next &raquo;</a>
+          ) : (
+            <span class="text-slate-400">Next &raquo;</span>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
