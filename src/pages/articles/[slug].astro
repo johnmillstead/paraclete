@@ -1,0 +1,74 @@
+---
+/**
+ * src/pages/articles/[slug].astro
+ * ---------------------------------
+ * Individual post page. Follows the same pattern as
+ * src/pages/people/[slug].astro: static params come from each entry's
+ * content-layer `id` (glob() loader collections don't have `.slug` — that
+ * was the old legacy Content Collections API), and the body is rendered
+ * with `post.rendered?.html` + `set:html` rather than `render()`, since
+ * `render()` has been unreliable with the glob() loader on Astro 6 here.
+ *
+ * Adjust the BaseLayout import path below to match your project if it
+ * lives somewhere other than src/layouts/BaseLayout.astro.
+ */
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { title, date, image } = post.data;
+const author = await getEntry(post.data.author);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={title}>
+  <article class="mx-auto max-w-3xl px-4 py-12 sm:px-8">
+    <a href="/articles" class="text-sm font-semibold text-orange-500 hover:text-orange-600">
+      &laquo; All Posts
+    </a>
+
+    <h1 class="mt-4 text-3xl font-bold text-teal-900 sm:text-4xl">{title}</h1>
+
+    <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
+      {author?.data.image && (
+        <img
+          src={author.data.image}
+          alt=""
+          loading="lazy"
+          class="h-8 w-8 rounded-full object-cover"
+        />
+      )}
+      {author?.data.title && <span>{author.data.title}</span>}
+      {author?.data.title && <span aria-hidden="true">&middot;</span>}
+      <time datetime={date.toISOString()}>{dateFormatter.format(date)}</time>
+    </div>
+
+    {image && (
+      <img
+        src={image}
+        alt=""
+        class="mt-8 aspect-[16/9] w-full rounded-xl object-cover"
+      />
+    )}
+
+    <div class="prose prose-slate mt-8 max-w-none" set:html={post.rendered?.html} />
+  </article>
+</BaseLayout>
